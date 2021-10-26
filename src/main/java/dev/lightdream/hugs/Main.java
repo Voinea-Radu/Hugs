@@ -3,13 +3,13 @@ package dev.lightdream.hugs;
 import dev.lightdream.api.API;
 import dev.lightdream.api.LightDreamPlugin;
 import dev.lightdream.api.configs.SQLConfig;
-import dev.lightdream.api.databases.User;
 import dev.lightdream.api.managers.CommandManager;
 import dev.lightdream.api.managers.MessageManager;
 import dev.lightdream.hugs.commands.HugBase;
 import dev.lightdream.hugs.commands.HugTopBase;
 import dev.lightdream.hugs.configs.Config;
 import dev.lightdream.hugs.configs.Lang;
+import dev.lightdream.hugs.dto.User;
 import dev.lightdream.hugs.managers.DatabaseManager;
 import dev.lightdream.hugs.managers.ScheduleManager;
 import org.bukkit.OfflinePlayer;
@@ -46,8 +46,18 @@ public final class Main extends LightDreamPlugin {
     }
 
 
+    @SuppressWarnings({"SwitchStatementWithTooFewBranches", "ConstantConditions"})
     @Override
     public @NotNull String parsePapi(OfflinePlayer offlinePlayer, String s) {
+        User user;
+        switch (s) {
+            case "lightdreamapi_hugs":
+                user = databaseManager.getUser(offlinePlayer.getUniqueId());
+                if (user == null) {
+                    return "0";
+                }
+                return String.valueOf(user.hugs);
+        }
         return "";
     }
 
